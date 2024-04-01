@@ -95,5 +95,5 @@ class DBStorage:
         if cls in classes.values():
             cls_inst = self.all(cls)
             return len(cls_inst)
-        if cls not in classess.values():
+        if cls not in classes.values():
             return
