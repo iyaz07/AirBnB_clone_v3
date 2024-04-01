@@ -84,5 +84,10 @@ class FileStorage:
 
     def get(self, cls, id):
         """Retrieve an object"""
-        key = cls.__name__ + '.' + id
-        return self.__objects.get(key)
+        if cls and id:
+            if cls in classes.values() and isinstance(id, str):
+                key = cls.__name__ + '.' + id
+                return self.__objects.get(key)
+            else:
+                return
+        return
