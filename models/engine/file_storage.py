@@ -73,8 +73,8 @@ class FileStorage:
         """Retrieve an object"""
         if cls is not None and type(cls) is str and id is not None and\
            type(id) is str and cls in classes:
-            cls = classes[cls]
-            result = self.__session.query(cls).filter(cls.id == id).first()
+            key = cls + '.' + id
+            result = self.__objects.get(key, None)
             return (result)
         else:
             return(None)
