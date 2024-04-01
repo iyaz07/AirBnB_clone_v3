@@ -75,13 +75,14 @@ class FileStorage:
             return len(self.__objects)
         elif isinstance(cls, str):
             if cls in classes:
-                return sum(1 for obj in self.__objects.values() if isinstance(obj, classes[cls]))
+                return sum(1 for obj in self.__objects.values()
+                           if isinstance(obj, classes[cls]))
         elif cls in classes.values():
-            return sum(1 for obj in self.__objects.values() if isinstance(obj, cls))
+            return sum(1 for obj in self.__objects.values()
+                       if isinstance(obj, cls))
         return 0
 
     def get(self, cls, id):
         """Retrieve an object"""
         key = cls.__name__ + '.' + id
         return self.__objects.get(key)
-
