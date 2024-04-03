@@ -55,7 +55,7 @@ def create_city(state_id):
     if not state:
         abort(404)
 
-    kwargs = request.get_json():
+    kwargs = request.get_json()
     if not kwargs:
         abort(400, 'Not a JSON')
     if 'name' not in kwargs:
