@@ -46,7 +46,8 @@ def delete_city(city_id):
         return abort(404)
 
 
-@app_views.route('/states/<state_id>/cities', methods=['POST'], strict_slashes=False)
+@app_views.route('/states/<state_id>/cities', methods=['POST'],
+                 strict_slashes=False)
 def create_city(state_id):
     """
     Create a new state Object
@@ -57,9 +58,9 @@ def create_city(state_id):
 
     kwargs = request.get_json()
     if not kwargs:
-        abort(400, 'Not a JSON')
+        return abort(400, 'Not a JSON')
     if 'name' not in kwargs:
-        abort(400, 'Missing name')
+        return abort(400, 'Missing name')
 
     kwargs['state_id'] = state_id
     city = City(**kwargs)
@@ -70,10 +71,8 @@ def create_city(state_id):
 
 @app_views.route('/cities/<city_id>', methods=['PUT'], strict_slashes=False)
 def update_city(city_id):
-    """
-    Update city_id
-    """
-    if request.content_type !=  'application/json':
+    """Update city_id"""
+    if request.content_type != 'application/json':
         return abort(400, 'Not a JSON')
     city = storage.get(City, city_id)
     if city:
