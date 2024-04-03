@@ -60,7 +60,7 @@ def post_place(city_id):
         abort(400, "Missing name")
 
     user_id = new_place['user_id']
-    user =  storage.get(User, user_id)
+    user = storage.get(User, user_id)
     if not user:
         abort(404)
 
