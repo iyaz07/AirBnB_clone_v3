@@ -59,9 +59,7 @@ def post_place(city_id):
     if "name" not in new_place:
         abort(400, "Missing name")
     place = Place(**new_place)
-    setattr(place, 'city_id', city_id)
-    storage.new(place)
-    storage.save()
+    place.save()
     return make_response(jsonify(place.to_dict()), 201)
 
 
