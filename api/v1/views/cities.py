@@ -51,19 +51,20 @@ def create_city(state_id):
     """
     Create a new state Object
     """
-    if request.content_type != 'application/json':
-        return abort(404, 'Not a JSON')
     state = storage.get(State, state_id)
     if not state:
-        return abort(404)
-    if not request.get_json():
-        return abort(400, 'Not a JSON')
-    kwargs = request.get_json()
+        abort(404)
+
+    kwargs = request.get_json():
+    if not kwargs:
+        abort(400, 'Not a JSON')
     if 'name' not in kwargs:
         abort(400, 'Missing name')
+
     kwargs['state_id'] = state_id
     city = City(**kwargs)
     city.save()
+
     return jsonify(city.to_dict()), 201
 
 
@@ -73,13 +74,13 @@ def update_city(city_id):
     Update city_id
     """
     if request.content_type !=  'application/json':
-        return abort(404, 'Not a JSON')
+        return abort(400, 'Not a JSON')
     city = storage.get(City, city_id)
     if city:
         if not request.get_json():
             return abort(400, 'Not a JSON')
         data = request.get_json()
-        ignorre_keys = ['id', 'created_at', 'updated_at']
+        ignore_keys = ['id', 'created_at', 'updated_at']
 
         for key, value in data.items():
             if key not in ignore_keys:
