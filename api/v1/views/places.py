@@ -60,9 +60,11 @@ def post_place(city_id):
         abort(400, "Missing name")
 
     user_id = new_place['user_id']
-    if not storage.get(User, user_id):
+    user =  storage.get(User, user_id)
+    if not user:
         abort(404)
 
+    new_place['city_id'] = city_id
     place = Place(**new_place)
     place.save()
     return make_response(jsonify(place.to_dict()), 201)
