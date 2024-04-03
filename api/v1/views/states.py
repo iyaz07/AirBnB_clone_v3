@@ -49,14 +49,15 @@ def create_state():
     Create a new state Object
     """
     if request.content_type != 'application/json':
-        return abort(404, 'Not a JSON')
+        return abort(400, 'Not a JSON')
     if not request.get_json():
         return abort(400, 'Not a JSON')
     kwargs = request.get_json()
     if 'name' not in kwargs:
         abort(400, 'Missing name')
     state = State(**kwargs)
-    state.save()
+    storage.new(state)
+    storage.save()
     return jsonify(state.to_dict()), 201
 
 
@@ -65,19 +66,18 @@ def update_state(state_id):
     """
     Update state_id
     """
-    if request.content_type !=  'application/json':
-        return abort(404, 'Not a JSON')
     state = storage.get(State, state_id)
-    if state:
-        if not request.get_json():
-            return abort(400, 'Not a JSON')
-        data = request.get_json()
-        ignorre_keys = ['id', 'created_at', 'updated_at']
+    if not state:
+        abort(404)
 
-        for key, value in data.items():
-            if key not in ignore_keys:
-                setattr(state, key, value)
-        state.save()
-        return jsonify(state.to_dict()), 200
-    else:
-        return abort(404)
+    body_request = request.get_json()
+    if not body_request:
+        abort(400, "Not a JSON")
+
+    ignorre_keys = ['id', 'created_at', 'updated_at']
+    for key, value in body_request.items():
+        if key not in ignore_keys:
+            setattr(state, key, value)
+
+    storage.save()
+    return jsonify(state.to_dict()), 200
